@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{/layout/index:: dynamic(~{::main})}">
+
+<body>
+<main th:object="${order}">
+    <div class="card">
+        <div class="card-header">ORDER INFORMATION</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="form-group col-sm-4">
+                    <div>Order number</div>
+                    <input th:field="*{id}" class="form-control" readonly>
+                </div>
+                <div class="form-group col-sm-4">
+                    <div>Purchaser</div>
+                    <input th:field="*{account.username}" class="form-control" readonly>
+                </div>
+                <div class="form-group col-sm-4">
+                    <div>Purchaser Date</div>
+                    <input type="text" th:field="*{createDate}" class="form-control" readonly>
+                </div>
+            </div>
+            <br>
+            <div>
+                <div>Shiping address</div>
+                <textarea th:field="*{address}" class="form-control" readonly></textarea>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-header">
+            ORDER LINES
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="detail: *{orderDetails}" th:object="${detail}">
+                    <td th:utext="*{product.id}"></td>
+                    <td th:utext="*{product.name}"></td>
+                    <td th:utext="*{#numbers.formatDecimal(price, 0, 'COMMA',2,'POINT')}"></td>
+                    <td th:utext="*{quantity}"></td>
+                    <td th:utext="*{#numbers.formatDecimal(price*quantity, 0, 'COMMA',2,'POINT')}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

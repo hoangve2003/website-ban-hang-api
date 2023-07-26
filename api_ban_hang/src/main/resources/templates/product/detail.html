@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{/layout/index:: dynamic(~{::main})}">
+
+<body>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <!-- Product image -->
+                <img th:src="@{|/assets/images/${item.image}|}" alt="Product Image" class="img-fluid product-image">
+            </div>
+            <div class="col-md-6 product-details">
+                <!-- Product details -->
+                <h3 th:utext="${item.name}"></h3>
+                <p>Price: <label th:utext="${item.price}"></label></p>
+                <p>Created Date: <label th:utext="${item.createDate}"></label></p>
+                <p>Availability: <label th:utext="${item.available} == true ?'Còn hàng':'Hết hàng'"></label></p>
+                <button class="btn btn-primary add-to-cart-btn" th:attr="ng-click=@{|cart.add(${item.id})|}">Thêm vào
+                    giỏ hàng
+                </button>
+            </div>
+        </div>
+        <hr>
+        <h4 class="title-category">Cùng loại</h4>
+        <div class="row">
+            <div th:each="p: ${item.category.products}" class="col-2 mr-2">
+                <ul class="list-unstyled">
+                    <li class="product-link">
+                        <a th:href="@{|/product/detail/${p.id}|}">
+                            <div class="card">
+                                <img class="card-img-top" style="width: 100px;height: 100px"
+                                     th:src="@{|/assets/images/${p.image}|}" alt="Product Image">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:utext="${p.name}"></h5>
+                                    <p class="card-text">Price: <label th:utext="${p.price}"></label></p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<div xmlns:th="http://www.thymeleaf.org" th:replace="~{/layout/index :: dynamic(~{::main})}">
+    <main>
+        <form th:action="@{/security/login}" method="post" class="col-sm-8">
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+                Username:
+                <input type="text" name="username" class="form-control"/>
+            </div>
+
+            <!-- Password input -->
+            <div class="form-outline mb-4">
+                Password:
+                <input name="password" type="password" id="form2Example2" class="form-control"/>
+            </div>
+
+            <!-- 2 column grid layout for inline styling -->
+            <div class="mb-4 row">
+                <!-- Checkbox -->
+                <div class="form-check col-6">
+                    <input class="form-check-input" name="remember-me" type="checkbox" value="" id="form2Example31"
+                           checked/>
+                    <label class="form-check-label" for="form2Example31"> Remember me </label>
+                </div>
+                <div class="text-right col-6" th:text="${message}"></div>
+
+            </div>
+
+            <!-- Submit button -->
+            <button class="btn btn-primary btn-block mb-4">Sign in</button>
+
+            <!-- Register buttons -->
+            <div class="text-center">
+                <p>Not a member? <a href="#!" style="text-decoration: none">Register</a></p>
+                <p>or sign up with:</p>
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="fab fa-facebook-f"></i>
+                </button>
+
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="fab fa-google"></i>
+                </button>
+            </div>
+        </form>
+    </main>
+</div>
