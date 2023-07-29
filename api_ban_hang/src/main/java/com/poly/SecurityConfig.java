@@ -7,35 +7,38 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     @Autowired
     AccountService accountService;
 
-    @Autowired
-    BCryptPasswordEncoder pe;
-
 
     //    Lấy dữ liệu trong db
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(username -> {
+    @Bean
+    public UserDetailsService authentication() throws Exception {
+       return (username -> {
             try {
                 Account user = accountService.findById(username);
-                String pw = pe.encode(user.getPassword());
+                String pw = getPasswordEncoder().encode(user.getPassword());
                 String[] role = user.getAuthorities().stream()
                         .map(er -> er.getRole().getId())
                         .collect(Collectors.toList())
@@ -51,27 +54,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     //    Phân quyền
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.authorizeRequests()
-                .antMatchers("/order/**").authenticated()
-                .antMatchers("/admin/**").hasAnyRole("STAF", "DIRE")
-                .antMatchers("/rest/authorities").hasRole("DIRE")
-                .anyRequest().permitAll();
-        http.formLogin()
-                .loginPage("/security/login/form")
-                .loginProcessingUrl("/security/login")
-                .defaultSuccessUrl("/security/login/success", false)
-                .failureUrl("/security/login/error");
-        http.rememberMe()
-                .tokenValiditySeconds(86400);
-        http.exceptionHandling()
-                .accessDeniedPage("/security/unauthoried");
+    @Bean
+    public SecurityFilterChain authorization(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable());
 
-        http.logout()
-                .logoutUrl("/security/logoff")
-                .logoutSuccessUrl("/security/logoff/success");
+        http.authorizeHttpRequests(req -> req.requestMatchers("/order/**").authenticated()
+                .requestMatchers("/assets/admin/**").hasAnyRole("STAF", "DIRE")
+                .requestMatchers("/rest/authorities").hasRole("DIRE")
+                .anyRequest().permitAll())
+
+                .formLogin(log -> log.loginPage("/security/login/form")
+                        .loginProcessingUrl("/security/login")
+                        .defaultSuccessUrl("/security/login/success", false)
+                        .failureUrl("/security/login/error"))
+
+                .rememberMe(remember -> remember.tokenValiditySeconds(86400))
+
+                .exceptionHandling(ex -> ex.accessDeniedPage("/security/unauthoried"))
+
+                .logout(logout -> logout.logoutUrl("/security/logoff")
+                        .logoutSuccessUrl("/security/logoff/success"))
+        .sessionManagement(ss -> ss.sessionCreationPolicy(SessionCreationPolicy.ALWAYS));
+        return http.build();
     }
 
     //    Mã hóa mật khẩu
@@ -81,8 +85,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     //    Cho phép truy xuất RestAPI từ bên ngoài
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowCredentials(false).maxAge(3600);
+            }
+        };
     }
+
 }

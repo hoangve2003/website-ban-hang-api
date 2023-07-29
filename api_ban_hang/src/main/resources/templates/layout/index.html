@@ -7,27 +7,27 @@
       integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
 <link rel="stylesheet" href="/assets/css/product-detail.css">
 <link rel="stylesheet" href="/assets/css/cart.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body class="container" ng-app="shopping-cart-app" ng-controller="shopping-cart-ctrl">
 <header class="row"></header>
 <nav class="row">
-    <div th:replace="/layout/menu.html"></div>
+    <div th:replace="~{/layout/menu.html}"></div>
 </nav>
 <div class="row">
     <article class="col-sm-9">
         <div th:replace="${main}"></div>
     </article>
     <aside class="col-sm-3">
-        <div th:replace="/layout/cart-info.html"></div>
+        <div th:replace="~{/layout/cart-info.html}"></div>
         <br>
-        <div th:replace="/layout/category.html"></div>
+        <div th:replace="~{/layout/category.html}"></div>
     </aside>
 </div>
 <footer class="row">
-    <div th:replace="/layout/footer.html"></div>
+    <div th:replace="~{/layout/footer.html}"></div>
 </footer>
 <script src="/assets/js/shopping-cart-app.js"></script>
 </body>

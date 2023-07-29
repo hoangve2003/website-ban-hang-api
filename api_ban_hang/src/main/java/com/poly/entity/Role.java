@@ -3,10 +3,8 @@ package com.poly.entity;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import jakarta.persistence.*;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

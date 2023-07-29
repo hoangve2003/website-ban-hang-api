@@ -5,26 +5,27 @@
                 <li class="nav-item">
                     <a class="nav-link active" th:href="@{/product/list}">Home</a>
                 </li>
-                <th:block th:if="${#request.remoteUser}">
+                <th:block th:if="${request}">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/security/logoff}">Sign out</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/order/list}">Your orders</a>
                     </li>
-                    <li class="nav-item" th:if="${#request.isUserInRole('DIRE') or #request.isUserInRole('STAF')}">
+                    <!-- Thực hiện kiểm tra vai trò của người dùng -->
+                    <li class="nav-item" th:if="${dire or staf}">
                         <a class="nav-link" th:href="@{/admin/home/index}">Administration</a>
                     </li>
                 </th:block>
 
-                <th:block th:unless="${#request.remoteUser}">
+                <th:block th:unless="${request}">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/security/login/form}">Sign in</a>
                     </li>
                 </th:block>
             </ul>
-            <ul class="nav navbar-nav navbar-right" th:if="${#request.remoteUser}">
-                <li class="nav-item"><a class="nav-link" href="">Welcome [[${#request.remoteUser}]]</a></li>
+            <ul class="nav navbar-nav navbar-right" th:if="${request}">
+                <li class="nav-item"><a class="nav-link" href="">Welcome [[${request}]]</a></li>
             </ul>
         </div>
     </nav>
