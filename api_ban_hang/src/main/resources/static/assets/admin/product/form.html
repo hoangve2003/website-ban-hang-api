@@ -1,0 +1,72 @@
+<div class="card">
+    <div class="card-header">Product list</div>
+    <form action="">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-4 text-center">
+                    <label for="image">
+                        <img ng-src="{{'/assets/images/' + form.image}}" style="max-width: 100%" height="200px">
+                    </label>
+                </div>
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <div>Name</div>
+                            <input ng-model="form.name" type="text" class="form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="">Price</div>
+                            <input ng-model="form.price" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <div class="">Image</div>
+                            <input type="file" class="form-control" id="image"
+                                   onchange="angular.element(this).scope().imageChanged(this.files)">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="">Category</div>
+                            <select ng-model="form.category.id" class="form-control">
+                                <option ng-repeat="c in category" ng-value="c.id">{{c.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-sm-6">
+                            <div class="">Create date</div>
+                            <input ng-model="form.createDate" type="date" class="form-control">
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <div class="">Available?</div>
+                            <div class="form-control">
+                                <label class="radio-inline">
+                                    <input ng-model="form.available" type="radio" ng-value="true" name="available"> Yes
+                                </label>
+                                <label class="radio-inline">
+                                    <input ng-model="form.available" type="radio" ng-value="false" name="available"> No
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-footer">
+            <button ng-click="create()" class="btn btn-primary">
+                <i class="fa-solid fa-plus fa-beat fa-2xs"></i> Create
+            </button>
+            <button ng-click="update()" class="btn btn-success">
+                <i class="fa-solid fa-pen-to-square fa-beat fa-2xs"></i> Update
+            </button>
+            <button ng-click="delete(form)" class="btn btn-danger">
+                <i class="fa-solid fa-trash fa-beat fa-2xs"></i> Delete
+            </button>
+            <button ng-click="reset()" type="reset" class="btn btn-primary">
+                <i class="fa-solid fa-arrows-rotate fa-beat fa-2xs"></i> Reset
+            </button>
+        </div>
+    </form>
+</div>

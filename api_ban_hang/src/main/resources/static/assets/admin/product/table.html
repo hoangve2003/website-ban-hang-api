@@ -1,0 +1,61 @@
+<div class="card">
+    <div class="card-header">Product edition</div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead class="table-success">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Date</th>
+                <th>Image</th>
+                <th>Category</th>
+                <th>Available</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="p in getCurrentPageProducts()">
+            <td>{{p.id}}</td>
+            <td>{{p.name}}</td>
+            <td>{{p.price | number: 2}}</td>
+            <td>{{p.createDate | date:"dd-MM-yyyy"}}</td>
+            <td>{{p.image}}</td>
+            <td>{{p.category.name}}</td>
+            <td>{{p.available?'Yes':'No'}}</td>
+            <td class="d-flex justify-content-center">
+                <div class="btn-group btn-group-xs ">
+                    <div class="px-1">
+                        <button ng-click="edit(p)" class="btn btn-warning"><i
+                                class="fa-solid fa-pen-to-square fa-beat fa-2xs"></i></button>
+                    </div>
+                    <div class="">
+                        <button ng-click="delete(p)" class="btn btn-warning"><i
+                                class="fa-solid fa-trash fa-beat fa-2xs"></i></button>
+                    </div>
+                </div>
+            </td>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center" style="margin:20px 0">
+                <li class="page-item" ng-class="{disabled: isFirstPage()}">
+                    <a class="page-link" ng-click="setPage(1)">First</a>
+                </li>
+                <li class="page-item" ng-class="{disabled: isFirstPage()}">
+                    <a class="page-link" ng-click="setPage(currentPage - 1)">Previous</a>
+                </li>
+                <li class="page-item" ng-repeat="page in getPagesArray() track by $index" ng-class="{active: currentPage === page}">
+                    <a class="page-link" ng-click="setPage(page)"> {{ page !== '...' ? page : '...' }}</a>
+                </li>
+                <li class="page-item" ng-class="{disabled: isLastPage()}">
+                    <a class="page-link" ng-click="setPage(currentPage + 1)">Next</a>
+                </li>
+                <li class="page-item" ng-class="{disabled: isLastPage()}">
+                    <a class="page-link" ng-click="setPage(getTotalPages())">Last</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<!-- Tabs navs -->
+<ul class="nav nav-tabs mb-3" style="font-variant: small-caps">
+    <li class="nav-item" role="presentation" style="cursor: pointer" ng-click="reset()">
+        <a
+                class="nav-link active"
+                data-toggle="tab"
+                data-target="#edit"
+                role="tab"
+                aria-selected="true"
+        >Product Edition</a
+        >
+    </li>
+    <li class="nav-item" role="presentation" style="cursor: pointer">
+        <a
+                class="nav-link"
+                data-toggle="tab"
+                data-target="#list"
+                role="tab"
+                aria-selected="false"
+        >Product list</a
+        >
+    </li>
+</ul>
+<!-- Tabs navs -->
+
+<!-- Tabs content -->
+<div class="tab-content">
+    <div id="edit" class="tab-pane fade show active" role="tabpanel">
+        <div ng-include="'/assets/admin/product/form.html'"></div>
+    </div>
+    <div class="tab-pane fade" id="list" role="tabpanel">
+        <div ng-include="'/assets/admin/product/table.html'"></div>
+    </div>
+</div>
+<!-- Tabs content -->
