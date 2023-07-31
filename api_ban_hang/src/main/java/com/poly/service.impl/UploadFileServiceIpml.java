@@ -30,11 +30,9 @@ public class UploadFileServiceIpml implements UploadService {
             System.out.println(saveFile.getAbsolutePath());
             return saveFile;
         } catch (IOException e) {
-<<<<<<<HEAD
             throw new RuntimeException();
-=======
-            throw new RuntimeException();
->>>>>>>origin / main
+
+
         }
     }
 }

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     @Autowired
     AccountService accountService;
@@ -55,9 +55,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/order/**").authenticated()
-                .antMatchers("/admin/**").hasAnyRole("STAF", "DIRE")
-                .antMatchers("/rest/authorities").hasRole("DIRE")
+                .requestMatchers("/order/**").authenticated()
+                .requestMatchers("/admin/**").hasAnyRole("STAF", "DIRE")
+                .requestMatchers("/rest/authorities").hasRole("DIRE")
                 .anyRequest().permitAll();
         http.formLogin()
                 .loginPage("/security/login/form")
